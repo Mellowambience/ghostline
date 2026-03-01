@@ -8,6 +8,31 @@ CLI-first. Privacy-native. Dark by design.
 
 ---
 
+## 🚀 Quick Start for Contributors
+
+New here? Here's how to get involved in **5 minutes**:
+
+```bash
+# 1. Fork this repo on GitHub, then clone your fork
+git clone https://github.com/YOUR_USERNAME/ghostline.git
+cd ghostline
+
+# 2. Pick a module (start small — see Good First Issues below)
+cd vaultcheck   # or ghostdns, ghost-scan, etc.
+
+# 3. Install dependencies (Python modules)
+pip install -r requirements.txt  # if it exists
+
+# 4. Create a branch for your work
+git checkout -b feat/your-feature-name
+
+# 5. Make your changes, then open a Pull Request
+```
+
+**Not sure where to start?** Browse issues labeled [`good first issue`](https://github.com/Mellowambience/ghostline/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) — these are scoped, beginner-friendly tasks across all modules.
+
+---
+
 ## Modules
 
 | Module | Status | Description |
@@ -61,7 +86,7 @@ docs/              # Documentation site
 ## Revenue Model
 
 | Stream | Details |
-|--------|---------|
+|--------|--------|
 | Merch | Print-on-demand via Printful, zero inventory |
 | CLI tools | Free + open source (trust + GitHub stars) |
 | Dashboard | $9/mo — unlimited scans, history, exports |
