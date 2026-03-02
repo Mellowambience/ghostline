@@ -1,0 +1,58 @@
+# accountwatch — example config
+# Copy to ~/.ghostline/accountwatch/config.yaml and fill in your values.
+# Environment variables are supported via ${VAR_NAME} syntax.
+
+platforms:
+  meta:
+    enabled: true
+    access_token: "${META_ACCESS_TOKEN}"
+    poll_interval: 15m
+
+  github:
+    enabled: true
+    token: "${GITHUB_TOKEN}"
+    poll_interval: 1h
+
+  # Phase 2 adapters (uncomment when available):
+  # google:
+  #   enabled: true
+  #   client_id: "${GOOGLE_CLIENT_ID}"
+  #   client_secret: "${GOOGLE_CLIENT_SECRET}"
+  #   poll_interval: 30m
+  #
+  # twitter:
+  #   enabled: true
+  #   bearer_token: "${TWITTER_BEARER_TOKEN}"
+  #   poll_interval: 1h
+  #
+  # generic_imap:
+  #   enabled: true
+  #   host: imap.gmail.com
+  #   username: "${IMAP_USERNAME}"
+  #   password: "${IMAP_PASSWORD}"
+  #   poll_interval: 30m
+
+alerts:
+  terminal: true
+  desktop_notification: true
+  webhook:
+    - url: "${DISCORD_WEBHOOK_URL}"
+      type: discord
+    # - url: "${SLACK_WEBHOOK_URL}"
+    #   type: slack
+  smtp:
+    enabled: false
+    host: smtp.gmail.com
+    port: 465
+    username: "${SMTP_USERNAME}"
+    password: "${SMTP_PASSWORD}"
+    from: "${SMTP_FROM}"
+    to: "${SMTP_TO}"
+
+audit_log:
+  path: "~/.ghostline/accountwatch/audit.log"
+  format: json
+
+baseline:
+  path: "~/.ghostline/accountwatch/baselines/"
+  hmac_key_env: "GHOSTLINE_HMAC_KEY"

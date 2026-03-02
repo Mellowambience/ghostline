@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ghostline-accountwatch"
+version = "0.1.0"
+description = "Recovery contact backdoor detector — part of the Ghostline cybersecurity suite"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Mars / Mellowambience", email = "natorretti11@gmail.com" }]
+keywords = ["security", "cybersecurity", "account-security", "ghostline", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Security",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1",
+    "httpx>=0.27",
+    "pyyaml>=6.0",
+    "apscheduler>=3.10",
+    "plyer>=2.1",
+    "requests>=2.31",
+]
+
+[project.scripts]
+accountwatch = "accountwatch.cli:cli"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff", "mypy"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
