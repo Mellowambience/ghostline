@@ -1,7 +1,7 @@
 """ghostline — top-level dispatcher for the Ghostline cybersecurity suite.
 
 Routes subcommands to each module's CLI. Modules are installed independently
-(ghost-scan, vaultcheck, ghostdns, phantomtrace, shadowaudit, accountwatch);
+(ghost-scan, vaultcheck, ghostdns, phantomtrace, shadowaudit, accountwatch, bookmark-audit);
 this launcher finds them on PATH and forwards arguments.
 """
 
@@ -20,6 +20,7 @@ MODULES = {
     "trace": "phantomtrace",
     "audit": "shadowaudit",
     "account": "accountwatch",
+    "bookmarks": "bookmark-audit",
 }
 
 
