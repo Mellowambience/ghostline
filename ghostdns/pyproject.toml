@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghostline-ghostdns"
+version = "0.1.0"
+description = "DNS resolver comparison + leak test — part of the Ghostline cybersecurity suite"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Mars / Mellowambience", email = "natorretti11@gmail.com" }]
+keywords = ["security", "cybersecurity", "dns", "dns-leak", "ghostline", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Security",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1",
+    "dnspython>=2.6",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+ghostdns = "ghostdns.cli:cli"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff", "mypy"]
+
+[tool.setuptools]
+packages = ["ghostdns"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

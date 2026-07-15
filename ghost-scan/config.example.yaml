@@ -1,0 +1,6 @@
+# ghost-scan — example config
+# Copy to ~/.ghostline/ghost-scan/config.yaml and adjust.
+
+timeout: 0.5
+max_threads: 200
+default_target: "127.0.0.1"   # safety default: localhost

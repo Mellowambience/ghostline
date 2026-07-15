@@ -1,0 +1,7 @@
+# phantomtrace — example config
+# Copy to ~/.ghostline/phantomtrace/config.yaml and adjust.
+# Environment variables supported via ${VAR_NAME} syntax.
+
+user_agent: "ghostline-phantomtrace/0.1 (+https://github.com/Mellowambience/ghostline)"
+timeout: 10
+rate_limit_seconds: 1.5

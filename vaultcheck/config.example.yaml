@@ -1,0 +1,17 @@
+# vaultcheck — example config
+# Copy to ~/.ghostline/vaultcheck/config.yaml if you want to override defaults.
+# Config is OPTIONAL — vaultcheck uses safe built-in defaults without it.
+# Environment variables are supported via ${VAR_NAME} syntax.
+
+# Offline crack-rate estimate (guesses per second). Higher = more pessimistic
+# crack-time estimates. Default is 1e9 (a single modern GPU, ballpark).
+analysis:
+  guesses_per_second: 1000000000
+
+# Network behaviour for the HIBP k-anonymity breach lookup.
+# Only the first 5 hex of the SHA-1 hash is ever transmitted (k-anonymity).
+# The password and the full hash NEVER leave your machine.
+breach:
+  api_url: "https://api.pwnedpasswords.com/range/{prefix}"
+  timeout_seconds: 10
+  user_agent: "ghostline-vaultcheck"

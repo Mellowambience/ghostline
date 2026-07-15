@@ -1,0 +1,32 @@
+# Top-level Ghostline launcher (optional convenience dispatcher)
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["ghostline_cli"]
+
+[project]
+name = "ghostline-cli"
+version = "0.1.0"
+description = "Top-level dispatcher for the Ghostline cybersecurity suite"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Mars / Mellowambience", email = "natorretti11@gmail.com" }]
+keywords = ["security", "ghostline", "cli", "dispatcher"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11"
+dependencies = ["click>=8.1"]
+
+[project.scripts]
+ghostline = "ghostline_cli:cli"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
