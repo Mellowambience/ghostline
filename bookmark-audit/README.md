@@ -14,7 +14,10 @@ inventory of everywhere you've pointed your browser. This tool parses it and
 identity services, default-credential lookups, hash crackers, wifi audit tools,
 and recovery utilities.
 
-- Parses every `<A HREF>` + its folder path
+- Parses every link + its folder path from **two formats**:
+  - Netscape/Firefox HTML exports (`bookmarks.html`)
+  - Chromium JSON bookmarks (Chrome / Edge / Opera GX / Brave — `Bookmarks` file)
+  - Format is auto-detected — just point it at either file
 - Classifies each link into a dual-use category (or benign)
 - Emits a categorized inventory: **markdown / csv / json**
 - Optionally writes a **CLEAN** export (favicon base64 stripped → tiny file)
@@ -41,8 +44,9 @@ cd ghostline/bookmark-audit
 ## Quick start
 
 ```bash
-# Human-readable report to stdout
+# Human-readable report to stdout (auto-detects HTML or Chromium-JSON)
 python audit.py bookmarks.html
+python audit.py "C:/Users/you/AppData/Roaming/Opera Software/Opera GX Stable/Default/Bookmarks"
 
 # Machine-readable (pipeline composable — Ghostline standard)
 python audit.py bookmarks.html --json
@@ -83,14 +87,12 @@ Add or tune patterns in the `CATEGORIES` dict in `audit.py`.
 
 ---
 
-## Example
+### Examples
 
-`examples/sample_bookmarks.html` is a small reconstructed export you can try
-without exporting your own:
-
-```bash
-python audit.py examples/sample_bookmarks.html --json
-```
+| File | What it is |
+|------|-----------|
+| `examples/sample_bookmarks.html` | Small reconstructed Netscape export (dual-use links) — `python audit.py examples/sample_bookmarks.html --json` |
+| `examples/live_opera_audit.md` | Real audit output of a live Opera GX `Bookmarks` JSON — 12 benign links, 0 dual-use |
 
 ---
 

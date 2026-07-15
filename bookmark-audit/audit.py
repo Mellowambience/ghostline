@@ -85,8 +85,9 @@ def classify(url: str, title: str) -> str:
     return "Other / Uncategorized"
 
 
-DUAL_CATEGORIES = {k for k in CATEGORIES if k != "Vendor / Help (browser default)"}
-DUAL_CATEGORIES.add("Other / Uncategorized")  # uncategorized => treat as review-needed
+DUAL_CATEGORIES = {k for k in CATEGORIES
+                   if k not in ("Vendor / Help (browser default)",
+                                "Other / Uncategorized")}
 
 
 def parse(path: str):
@@ -119,6 +120,61 @@ def parse(path: str):
                 'dual_use': cat in DUAL_CATEGORIES,
             })
     return rows
+
+
+# --------------------------------------------------------------------------
+# Chromium JSON bookmarks (Chrome / Edge / Opera / Brave) importer
+# --------------------------------------------------------------------------
+def parse_chromium_json(path: str):
+    with open(path, encoding='utf-8', errors='replace') as f:
+        data = json.load(f)
+
+    rows = []
+
+    def walk(node, path):
+        t = node.get('type')
+        name = node.get('name', '')
+        if t == 'url':
+            url = node.get('url', '').strip()
+            if not url or url.startswith('place:'):
+                return
+            folder = (' / '.join(path[1:]) if len(path) > 1
+                      else (path[0] if path else '(root)'))
+            cat = classify(url, name)
+            rows.append({
+                'folder': folder,
+                'title': name,
+                'url': url,
+                'add_date': str(node.get('date_added', '')),
+                'last_modified': str(node.get('date_modified', '')),
+                'category': cat,
+                'dual_use': cat in DUAL_CATEGORIES,
+            })
+        elif t == 'folder':
+            for child in node.get('children', []):
+                walk(child, path + [name])
+
+    for root_key, root_node in data.get('roots', {}).items():
+        walk(root_node, [root_key])
+
+    # Deduplicate by URL (Opera/Chromium exports can contain duplicate
+    # bookmark-bar entries). Keep the first folder path encountered.
+    seen, deduped = set(), []
+    for r in rows:
+        if r['url'] in seen:
+            continue
+        seen.add(r['url'])
+        deduped.append(r)
+    return deduped
+
+
+def parse_auto(path: str):
+    """Detect format: Chromium JSON vs Netscape HTML."""
+    with open(path, encoding='utf-8', errors='replace') as f:
+        head = f.read(4096)
+    if head.lstrip().startswith('{') or '"roots"' in head:
+        return parse_chromium_json(path)
+    return parse(path)
 
 
 # --------------------------------------------------------------------------
@@ -232,7 +288,7 @@ def main():
     if not os.path.exists(args.bookmarks):
         sys.exit(f"error: file not found: {args.bookmarks}")
 
-    rows = parse(args.bookmarks)
+    rows = parse_auto(args.bookmarks)
     src = os.path.basename(args.bookmarks)
 
     if args.csv:
