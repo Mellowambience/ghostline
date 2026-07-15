@@ -16,6 +16,7 @@ module is installed independently and wrapped by a single `ghostline` dispatcher
 | `ghostline trace` | `phantomtrace` | Public-data OSINT recon (DNS/TLS/HTTP/WHOIS) | ✅ |
 | `ghostline audit` | `shadowaudit` | Non-destructive web-app security checklist | ✅ |
 | `ghostline account` | `accountwatch` | Recovery-contact backdoor detector | ✅ |
+| `ghostline bookmarks` | `bookmark-audit` | Dual-use bookmark export auditor (Firefox HTML + Chromium JSON) | ✅ |
 
 ## Install
 
@@ -33,6 +34,7 @@ pip install -e ./ghostdns
 pip install -e ./phantomtrace
 pip install -e ./shadowaudit
 pip install -e ./accountwatch
+pip install -e ./bookmark-audit
 ```
 
 ## Use
@@ -45,7 +47,8 @@ ghostline dns compare example.com
 ghostline trace recon example.com
 ghostline audit example.com
 ghostline account check
-```
+ghostline bookmarks "C:/Users/you/AppData/Roaming/Opera Software/Opera GX Stable/Default/Bookmarks"
+
 
 Each module also has its own console script (`ghost-scan`, `vaultcheck`, …) if
 you prefer to call it directly.
