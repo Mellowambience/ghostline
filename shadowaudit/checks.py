@@ -52,7 +52,7 @@ CSP_DIRECTIVES_RECOMMENDED = ["default-src", "script-src", "object-src"]
 class Check:
     id: str
     title: str
-    state: str  # pass | warn | fail
+    state: str  # pass | warn | fail | error
     note: str
     remediation: str = ""
 
@@ -70,8 +70,9 @@ class AuditReport:
         return d
 
 
-def _probe(target: str, timeout: int, user_agent: str) -> tuple[dict, str, str]:
-    """Return (headers, final_url, transport). Safe GET only."""
+def _probe(target: str, timeout: int, user_agent: str) -> tuple[dict, str, str, str | None]:
+    """Return (headers, final_url, transport, error). Safe GET only.
+    `error` is None on success, or a human-readable message on total failure."""
     if httpx is None:  # pragma: no cover
         raise RuntimeError("httpx is required for shadowaudit")
     url = target if target.startswith(("http://", "https://")) else f"https://{target}"
@@ -83,15 +84,25 @@ def _probe(target: str, timeout: int, user_agent: str) -> tuple[dict, str, str]:
             resp = httpx.get(url.replace("https://", "http://"), timeout=timeout,
                              follow_redirects=True, headers={"User-Agent": user_agent})
         except Exception as exc2:  # noqa: BLE001
-            return {}, url, f"<error: {exc} / {exc2}>"
+            return {}, url, "", f"<error: {exc} / {exc2}>"
     headers = {k.lower(): v for k, v in resp.headers.items()}
-    return headers, str(resp.url), urlparse(str(resp.url)).scheme
+    return headers, str(resp.url), urlparse(str(resp.url)).scheme, None
 
 
 def run_audit(target: str, timeout: int = 10, user_agent: str = "ghostline") -> AuditReport:
-    headers, final_url, transport = _probe(target, timeout, user_agent)
-    report = AuditReport(target=target, transport=transport)
+    headers, final_url, transport, error = _probe(target, timeout, user_agent)
+    report = AuditReport(target=target, transport=transport or "unknown")
     checks: list[Check] = []
+
+    # Total probe failure -> single error check, do not fabricate TLS/redirect fails
+    if error is not None:
+        checks.append(Check("transport.probe", "Reachability probe",
+                            "error", f"Could not reach target: {error}",
+                            "Verify the host is up and reachable; retry with a longer timeout."))
+        report.checks = checks
+        report.max_score = len(checks) * 2
+        report.score = 0
+        return report
 
     # Transport / TLS
     if transport == "https":
