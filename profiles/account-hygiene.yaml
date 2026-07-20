@@ -1,0 +1,15 @@
+title: Account Hygiene
+description: >-
+  The personal-defensive moat. Checks password breach status, bookmark
+  exposure, and account recovery posture. Pairs with accountwatch for the
+  "did someone add a recovery contact?" question.
+steps:
+  - module: vault
+    args: ["check", "--file", "profiles/sample_passwords.txt", "--json"]
+    timeout: 30
+  - module: bookmarks
+    args: ["--json", "profiles/sample_bookmarks.html"]
+    timeout: 30
+  - module: account
+    args: []
+    timeout: 30

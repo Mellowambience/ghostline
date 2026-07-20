@@ -1,0 +1,18 @@
+title: Home Audit
+description: >-
+  Local-network + personal-hygiene sweep for a new machine or a quarterly
+  cleanup. Chains DNS privacy, password strength, bookmark surface, and
+  web-header posture into one report.
+steps:
+  - module: dns
+    args: ["list-resolvers"]
+    timeout: 30
+  - module: vault
+    args: ["check", "--file", "profiles/sample_passwords.txt", "--json"]
+    timeout: 30
+  - module: bookmarks
+    args: ["--json", "profiles/sample_bookmarks.html"]
+    timeout: 30
+  - module: audit
+    args: ["audit", "--json", "example.com"]
+    timeout: 30
