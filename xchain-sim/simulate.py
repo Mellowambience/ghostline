@@ -51,6 +51,18 @@ PROFILES = {
         "replay_protection": ["exec_state_success_skip"],
         "mint_gated": ["pool_signer_pda", "balance_postcheck"],
         "curse_gate": ["verify_uncursed_cpi_before_release"],
+        "has_curse": True,
+    },
+    # CCIP EVM OffRamp: the in-scope Solidity asset. Source NOT retrieved this session
+    # (monorepo split; current EVM OffRamp not in chainlink@v2.56.0 nor chainlink-ccip@solana-*).
+    # Profiled as UNVERIFIED so the tool never claims SAFE on unread code.
+    "ccip-evm-offramp": {
+        "message_auth": [],
+        "replay_protection": [],
+        "mint_gated": [],
+        "curse_gate": [],
+        "has_curse": True,
+        "verified": False,
     },
 }
 
@@ -70,6 +82,13 @@ CURSE_RELEVANT = {"wormhole-core": False, "wormhole-token-bridge": False,
 def simulate(gates):
     """Predict outcome per scenario from a gates dict."""
     has_curse = gates.get("has_curse", True)  # default: assume curse mechanism exists
+    if not gates.get("verified", True):
+        # Source not retrieved — never claim SAFE on unread code.
+        return {sid: {
+            "scenario": name,
+            "outcome": "UNVERIFIED",
+            "detail": "contract source not retrieved; outcome unknown",
+        } for sid, (name, _) in SCENARIOS.items()}
     results = {}
     for sid, (name, gate_key) in SCENARIOS.items():
         present = gates.get(gate_key, [])
