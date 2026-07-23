@@ -53,16 +53,17 @@ PROFILES = {
         "curse_gate": ["verify_uncursed_cpi_before_release"],
         "has_curse": True,
     },
-    # CCIP EVM OffRamp: the in-scope Solidity asset. Source NOT retrieved this session
-    # (monorepo split; current EVM OffRamp not in chainlink@v2.56.0 nor chainlink-ccip@solana-*).
-    # Profiled as UNVERIFIED so the tool never claims SAFE on unread code.
+    # CCIP EVM OffRamp: in-scope Solidity asset. Source retrieved via @chainlink/contracts-ccip@2.0.0
+    # (npm). Verified 2026-07-23: RMN curse checked FIRST (line 199), onRamp allowlist +
+    # destChainSelector + CCV quorum (_ensureCCVQuorumIsReached), replay via executionState
+    # (UNTOUCHED/FAILURE only), mint via registered pool + balance pre/post. All four gates present.
     "ccip-evm-offramp": {
-        "message_auth": [],
-        "replay_protection": [],
-        "mint_gated": [],
-        "curse_gate": [],
+        "message_auth": ["onRamp_allowlist", "ccv_quorum", "dest_chain_selector"],
+        "replay_protection": ["execution_state_untouched_failure"],
+        "mint_gated": ["token_admin_registry_pool", "balance_pre_post"],
+        "curse_gate": ["isCursed_first"],
         "has_curse": True,
-        "verified": False,
+        "verified": True,
     },
 }
 
