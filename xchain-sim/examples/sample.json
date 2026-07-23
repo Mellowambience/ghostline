@@ -1,0 +1,6 @@
+{
+  "message_auth": ["ocr3_quorum_fplus1", "merkle_root", "transmitter_registered"],
+  "replay_protection": ["exec_state_success_skip"],
+  "mint_gated": ["pool_signer_pda", "balance_postcheck"],
+  "curse_gate": ["verify_uncursed_cpi_before_release"]
+}

@@ -1,0 +1,6 @@
+[project]
+name = "xchain-sim"
+version = "0.1.0"
+description = "Static cross-chain bridge attack simulator (gate-pattern checker)"
+requires-python = ">=3.11"
+dependencies = []
