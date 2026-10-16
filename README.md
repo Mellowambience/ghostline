@@ -6,6 +6,8 @@
 Ghostline is a collection of small, focused, open-source security tools. Each
 module is installed independently and wrapped by a single `ghostline` dispatcher.
 
+**At a glance:** seven working modules (port scanning, password breach checks, DNS leak tests, OSINT recon, web-app audits, recovery-contact backdoor detection, bookmark auditing), each pip-installable on its own behind one CLI.
+
 ## Modules
 
 | Dispatcher | Module | What it does | Status |
