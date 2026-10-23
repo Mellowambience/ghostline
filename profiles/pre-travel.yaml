@@ -1,0 +1,14 @@
+title: Pre-Travel
+description: >-
+  Run before a trip. Confirms DNS isn't leaking, passwords are breach-clean,
+  and no surprise recovery contacts. Minimal, fast, offline where possible.
+steps:
+  - module: dns
+    args: ["list-resolvers"]
+    timeout: 30
+  - module: vault
+    args: ["check", "--file", "profiles/sample_passwords.txt", "--json"]
+    timeout: 30
+  - module: account
+    args: []
+    timeout: 30
